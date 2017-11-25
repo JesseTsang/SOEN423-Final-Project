@@ -1,0 +1,33 @@
+//Generated files will be inside "common" package.
+module common
+{
+	enum BranchID {BC, MB, NB, QC};
+	enum EditRecordFields {address, phone, branch};
+	
+	//Interface for the Banking Server
+	interface BankServerInterface
+	{	
+		//Unknown client exception
+		exception invalid_client {};
+		
+		//Invalid method invocation
+		exception invalid_bankOperation {};
+		
+		typedef sequence<string> accounts;
+		
+		long getLocalAccountCount();
+		accounts getAllCustomerAccount();
+		
+		boolean createAccount(in string firstName, in string lastName, in string address, in string phone, in string customerID, in BranchID branchID) raises (invalid_client);
+		boolean editRecord(in string customerID, in EditRecordFields fieldName, in string newValue) raises (invalid_client);
+		
+		boolean deposit(in string customerID, in double amount) raises (invalid_client, invalid_bankOperation);
+		boolean withdraw(in string customerID, in double amount) raises (invalid_client, invalid_bankOperation);
+		double getBalance(in string customerID) raises (invalid_client);
+		boolean transferFund(in string sourceID, in float amount, in string destID) raises (invalid_client, invalid_bankOperation);
+			
+		long getUDPPort();
+		string getUDPHost();
+		void shutdown();
+	};
+};
