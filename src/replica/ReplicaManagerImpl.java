@@ -1,9 +1,11 @@
 package replica;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.omg.CORBA.ORB;
+import org.omg.CORBA.UserException;
 import org.omg.PortableServer.POA;
 
 public class ReplicaManagerImpl implements ReplicaManagerInterface
@@ -19,11 +21,20 @@ public class ReplicaManagerImpl implements ReplicaManagerInterface
 	private POA rootPOA;
 	
 	public ReplicaManagerImpl(String host, String[] branchList, String[] branchPorts, 
-						      Map<String, Integer> RMUDPPorts, ORB orb, POA rootPOA)
+						      Map<String, Integer> RMUDPPorts, ORB orb, POA rootPOA) throws UserException
 	{
+		this.RMHostName = host;
+		this.startReplica(branchList, branchPorts);
 		
+		this.RMUDPPortsList = RMUDPPorts;
+		this.crashedReplicaList = new HashSet<String>();
 		
-		
+		this.orb = orb;
+		this.rootPOA = rootPOA;
+	}
+	
+	private void startReplica(String[] branchList, String[] branchPorts) throws UserException
+	{
 		
 	}
 
