@@ -1,0 +1,45 @@
+module dbs
+{
+	module corba
+	{
+		struct client
+		{
+			string firstName;
+			string lastName;
+			string address;
+			string phoneNum;
+			string clientID;
+		};
+		
+		struct clientList
+		{
+			string branchID;
+			sequence<client> allClients;
+		};
+		
+		interface CallBack
+		{
+			void responseMessage(in string message);
+		};
+		
+		interface FailureFreeFE
+		{
+			typedef sequence<clientList> reult;
+			
+			string sayHello();
+			double deposit(in long long accountNum,in float amount);
+			double withdraw(in long long accountNum,in float amount);
+			double balance(in long long accountNum);
+			double transfer(in long long src_accountNum,in long long
+			dest_accountNum,in float amount);
+			
+			string requestResponse(in CallBack cb);
+			
+			oneway void shutdown();
+			
+			boolean createAccount(in string firstName, in string lastName, in string address, in string phone, in string customerID, in string branchID);
+			result getAccountCount
+			void setByzantineFlag(in boolean flag);
+		};
+	};
+};

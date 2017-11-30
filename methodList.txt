@@ -1,0 +1,11 @@
+Manager operations:
+createAccountRecord (firstName, lastName, address, phone, branch)
+editRecord (customerID, fieldName, newValue)
+getAccountCount()
+
+Customer operations:
+deposit(customerID, amt)
+withdraw(customerID, amt)
+getBalance(customerID)
+
+transferFund(managerID/customerID, amount,srcAccount,destAccount)
