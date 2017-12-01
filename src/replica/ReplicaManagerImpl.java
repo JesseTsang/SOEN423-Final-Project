@@ -8,6 +8,8 @@ import org.omg.CORBA.ORB;
 import org.omg.CORBA.UserException;
 import org.omg.PortableServer.POA;
 
+import dbs.corba.FailureFreeFE;
+
 public class ReplicaManagerImpl implements ReplicaManagerInterface
 {
 	private String RMHostName;
@@ -31,10 +33,33 @@ public class ReplicaManagerImpl implements ReplicaManagerInterface
 		
 		this.orb = orb;
 		this.rootPOA = rootPOA;
+		
+		startUDPServer();
+		startHeartBeatChecker();
 	}
+	
 	
 	private void startReplica(String[] branchList, String[] branchPorts) throws UserException
 	{
+		for(int i = 0; i < branchList.length; i++)
+		{
+			String branchID = branchList[i];
+			int branchPort = new Integer(branchPorts[i]);
+			
+			FailureFreeFE branchServer = 
+		}
+		
+	}
+	
+	private void startHeartBeatChecker()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void startUDPServer()
+	{
+		// TODO Auto-generated method stub
 		
 	}
 
