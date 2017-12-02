@@ -1,3 +1,4 @@
+//To start, go to "src" folder and use command "idlj -fall dbs.idl".
 module dbs
 {
 	module corba
@@ -38,7 +39,9 @@ module dbs
 			oneway void shutdown();
 			
 			boolean createAccount(in string firstName, in string lastName, in string address, in string phone, in string customerID, in string branchID);
-			result getAccountCount
+			//result getAccountCount();
+			
+			//True if we want to set a replic to artificially produce a wrong result.
 			void setByzantineFlag(in boolean flag);
 		};
 	};

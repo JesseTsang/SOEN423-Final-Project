@@ -1,4 +1,4 @@
-package replica;
+package replicaManager;
 
 public enum CORBAProperties
 {

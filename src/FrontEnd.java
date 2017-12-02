@@ -379,6 +379,19 @@ public class FrontEnd extends FailureFreeFEPOA{
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public boolean createAccount(String firstName, String lastName, String address, String phone, String customerID,
+	        String branchID)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public void setByzantineFlag(boolean flag)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

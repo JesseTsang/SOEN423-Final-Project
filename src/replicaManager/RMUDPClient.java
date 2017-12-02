@@ -1,4 +1,4 @@
-package replica;
+package replicaManager;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

@@ -1,9 +1,9 @@
-package replica;
+package replicaManager;
 
 public enum UDPStatus
 {
 	HEARTBEAT,
 	FAILURE,
 	CRASH,
-	REMOVE;
+	REMOVE_CRASH;
 }

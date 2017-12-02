@@ -1,4 +1,4 @@
-package replica;
+package replicaManager;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -50,7 +50,7 @@ public class RMUDPServer implements Runnable
 				//4. Translate the byte data from the request to invoke the method			
 				String request = new String(requestPacket.getData());
 				System.out.println("RMUDPServer Log: | Request Message: | From: [" + returnIP + ":" + returnPort +"] to " 
-									+ replicaManager.getRMHostName() + " | Message: " + request );
+									+ replicaManager.getRMHost() + " | Message: " + request );
 				
 				String requestMsg = replicaManager.handleUDPMsg(request);
 				
