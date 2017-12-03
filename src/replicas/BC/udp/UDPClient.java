@@ -1,42 +1,46 @@
-package replicaManager;
+package replicas.BC.udp;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 
-public class RMUDPClient
+//This client will make the UDP call/request for the interbank operations
+public class UDPClient
 {
-	private static final int BYTE_SIZE = 1000;
-	private static final int TIMEOUT = 1000;
-	
 	private String UDPHost;
 	private int UDPPort;	
-	private String response = null;
+	private BankUDPInterface request;
+	private BankUDPInterface response;
 	
+	private String branchID;
 	Logger logger = null;
 	
-	public RMUDPClient(String hostName, int portNum)
+	
+	public UDPClient(String hostName, int portNum, String branchID)
 	{
 		this.UDPHost = hostName;
 		this.UDPPort = portNum;
+		this.branchID = branchID;
 		
 		logger = initiateLogger();
 	}
 	
 	private Logger initiateLogger() 
 	{
-		Logger logger = Logger.getLogger("Server Logs/" + UDPHost + "- Server Log");
+		Logger logger = Logger.getLogger("Server Logs/" + this.branchID + "- Server Log");
 		FileHandler fh;
 		
 		try
 		{
 			//FileHandler Configuration and Format Configuration
-			fh = new FileHandler("Server Logs/" + UDPHost + " - Server Log.log");
+			fh = new FileHandler("Server Logs/" + this.branchID + " - Server Log.log");
 			
 			//Disable console handling
 			logger.setUseParentHandlers(false);
@@ -62,25 +66,26 @@ public class RMUDPClient
 		return logger;
 	}
 	
-	public String send(String request)
-	{	
+	public void send(BankUDPInterface requestCall)
+	{
+		//1. Make sure the old request is cleared.
+		request = null;
+		
 		try
 		{
+			this.logger.info("Server Log: | UDPClient Log |Initializating UDP Request.");
+			
 			//2. Prepare packet
 			//2.1 Get the destination IP
-			InetAddress IP = InetAddress.getByName(UDPHost);
+			InetAddress ip = InetAddress.getByName(UDPHost);
 			
 			//2.2 Prepare containers for the outgoing request and incoming reply.
-			byte[] requestByte = new byte[BYTE_SIZE];
-			byte[] responseByte = new byte[BYTE_SIZE];
+			byte[] requestByte = MarshallService.marshall(requestCall);
+			byte[] replyByte = new byte[requestByte.length];
 			
-			//2.3 Prepare request message
-			requestByte = request.getBytes();
-			
-			//2.4 Prepare a socket and a packet for the request.
+			//2.3 Prepare a socket and a packet for the request.
 			DatagramSocket reqSocket = new DatagramSocket();
-			reqSocket.setSoTimeout(TIMEOUT);
-			DatagramPacket reqPacket = new DatagramPacket(requestByte, requestByte.length, IP, UDPPort);
+			DatagramPacket reqPacket = new DatagramPacket(requestByte, requestByte.length, ip, UDPPort);
 			
 			//3. Send out the packet
 			reqSocket.send(reqPacket);
@@ -88,11 +93,11 @@ public class RMUDPClient
 			this.logger.info("Server Log: | UDPClient Log | UDP Packet Sent.");
 			
 			//4. Wait for a response
-			DatagramPacket reponsePacket = new DatagramPacket(responseByte, responseByte.length);
+			DatagramPacket replyPacket = new DatagramPacket(replyByte, replyByte.length);
 			
 			
 			//5. Unmarshall the response
-			response = new String(reponsePacket.getData());
+			response = MarshallService.unmarshall(replyPacket.getData());
 			
 			this.logger.info("Server Log: | UDPClient Log | UDP Reply Received.");
 			
@@ -102,19 +107,16 @@ public class RMUDPClient
 			this.logger.info("Server Log: | UDPClient Log | UDP Request Completed. Connection Terminated.");
 			
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
+			this.logger.severe("Server Log: | UDPClient Log | UDP Request Failed. Error: " + e.getMessage());
 			e.printStackTrace();
-			response = "RMUDPClient: | send() Error: | Unable to send UDP request to server: [" + UDPHost + UDPPort + "]";
 		}
-		
-		return response;
 	}
-	
-	public String UDPMessage(String sourceRM, UDPStatus status, String branchID, String destRM)
+
+	//Getter for the response
+	public BankUDPInterface getResponse()
 	{
-		String message = status.name() + ";" + sourceRM + ";" + branchID + ";" + destRM;
-		
-		return message;
+		return response;
 	}
 }

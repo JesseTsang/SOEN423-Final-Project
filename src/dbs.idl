@@ -28,18 +28,19 @@ module dbs
 			typedef sequence<clientList> reult;
 			
 			string sayHello();
-			double deposit(in long long accountNum,in float amount);
-			double withdraw(in long long accountNum,in float amount);
-			double balance(in long long accountNum);
-			double transfer(in long long src_accountNum,in long long
-			dest_accountNum,in float amount);
+			boolean deposit(in string accountNum,in float amount);
+			boolean withdraw(in string accountNum,in float amount);
+			float balance(in string accountNum);
+			boolean transfer(in string src_accountNum,in string dest_accountNum,in float amount);
 			
 			string requestResponse(in CallBack cb);
 			
 			oneway void shutdown();
 			
 			boolean createAccount(in string firstName, in string lastName, in string address, in string phone, in string customerID, in string branchID);
+			
 			//result getAccountCount();
+			long getLocalAccountCount();
 			
 			//True if we want to set a replic to artificially produce a wrong result.
 			void setByzantineFlag(in boolean flag);

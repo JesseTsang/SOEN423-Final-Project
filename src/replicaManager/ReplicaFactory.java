@@ -12,7 +12,7 @@ import org.omg.PortableServer.POA;
 import dbs.corba.FailureFreeFE;
 import dbs.corba.FailureFreeFEHelper;
 import dbs.corba.FailureFreeFEPOA;
-import replicas.BC.BankServerBC;
+import replicas.BC.BankServerImpl;
 import replicas.MB.BankServerMB;
 import replicas.NB.BankServerNB;
 import replicas.QC.BankServerQC;
@@ -61,7 +61,7 @@ public class ReplicaFactory
 				switch(branchID)
 				{
 					case "BC":
-						branch = new BankServerBC();
+						branch = new BankServerImpl(branchID+"101", branchPort, RMHost);
 						break;
 					case "MB":
 						branch = new BankServerMB();
@@ -79,7 +79,7 @@ public class ReplicaFactory
 				switch(branchID)
 				{
 					case "BC":
-						branch = new BankServerBC();
+						branch = new BankServerImpl("bc201", branchPort, RMHost);
 						break;
 					case "MB":
 						branch = new BankServerMB();
@@ -97,7 +97,7 @@ public class ReplicaFactory
 				switch(branchID)
 				{
 					case "BC":
-						branch = new BankServerBC();
+						branch = new BankServerImpl("bc301", branchPort, RMHost);
 						break;
 					case "MB":
 						branch = new BankServerMB();
